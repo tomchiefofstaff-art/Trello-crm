@@ -733,27 +733,7 @@ function renderBoardHeader(){
   const lists=STATE.boardData.lists||{};
   const hasLists=Object.keys(lists).length>0;
   if(hasLists){
-    const testBtn=ce('button','board-header-btn','🧪 Test-Karte');
-    testBtn.style.background='#4bce97';
-    testBtn.style.color='#1d2125';
-    testBtn.style.fontWeight='bold';
-    testBtn.addEventListener('click',()=>{
-      console.log('=== TEST CARD BUTTON CLICKED ===');
-      const listIds=Object.keys(lists);
-      const firstListId=listIds[0];
-      console.log('First list ID:',firstListId);
-      const cards=STATE.boardData.cards||{};
-      const listCards=Object.entries(cards).filter(([,c])=>c.listId===firstListId&&!c.archived);
-      const maxOrder=listCards.length>0?Math.max(...listCards.map(([,c])=>c.order||0)):0;
-      console.log('Max order:',maxOrder);
-      
-      // Create a test card
-      createCard(STATE.currentBoardId,firstListId,'Testkarte '+new Date().toLocaleTimeString('de-DE'),maxOrder+1).then(cardId=>{
-        console.log('Test card created with ID:',cardId);
-      });
-    });
-    hdr.appendChild(testBtn);
-    
+
     // Add a button to show current board data structure
     const debugBtn=ce('button','board-header-btn','🔍 Debug');
     debugBtn.addEventListener('click',()=>{
@@ -882,39 +862,6 @@ function buildList(list,cardsObj){
   }
   el.appendChild(cardsArea);
 
-  // Test button (SUPER VISIBLE)
-  const testBtn=ce('button','add-card-btn','🧪 TEST-KARTE ERSTELLEN');
-  testBtn.style.background='#4bce97';
-  testBtn.style.color='#1d2125';
-  testBtn.style.fontWeight='bold';
-  testBtn.style.border='3px solid #1d2125';
-  testBtn.style.fontSize='14px';
-  testBtn.style.padding='12px';
-  testBtn.style.margin='4px';
-  testBtn.style.borderRadius='8px';
-  testBtn.style.width='100%';
-  testBtn.style.boxShadow='0 0 15px #4bce97';
-  
-  testBtn.addEventListener('click',()=>{
-    console.log('=== TEST BUTTON CLICKED ===');
-    console.log('Creating test card in list:',list.id);
-    
-    // Get current order
-    const cards=STATE.boardData.cards||{};
-    const listCards=Object.entries(cards).filter(([,c])=>c.listId===list.id&&!c.archived);
-    const maxOrder=listCards.length>0?Math.max(...listCards.map(([,c])=>c.order||0)):0;
-    
-    // Create test card
-    createCard(STATE.currentBoardId,list.id,'Testkarte '+new Date().toLocaleTimeString('de-DE'),maxOrder+1).then(cardId=>{
-      console.log('✅ Test card created successfully!',cardId);
-      showToast('Testkarte erstellt: '+cardId);
-    }).catch(err=>{
-      console.error('❌ Failed to create test card:',err);
-      alert('Testkarte konnte nicht erstellt werden: '+err.message);
-    });
-  });
-  footer.appendChild(testBtn);
-  
   // Normal add button
   const addBtn=ce('button','add-card-btn','+ Karte hinzufügen');
   addBtn.style.background='#579dff';
