@@ -729,22 +729,6 @@ function renderBoardHeader(){
   });
   hdr.appendChild(menuBtn);
   
-  // Debug: Add test card button (only if board has lists)
-  const lists=STATE.boardData.lists||{};
-  const hasLists=Object.keys(lists).length>0;
-  if(hasLists){
-
-    // Add a button to show current board data structure
-    const debugBtn=ce('button','board-header-btn','🔍 Debug');
-    debugBtn.addEventListener('click',()=>{
-      console.log('=== DEBUG ===');
-      console.log('Current board ID:',STATE.currentBoardId);
-      console.log('Board data:',JSON.stringify(STATE.boardData,null,2));
-      console.log('Lists:',Object.keys(lists||{}));
-      console.log('Cards:',Object.keys(STATE.boardData.cards||{}));
-    });
-    hdr.appendChild(debugBtn);
-  }
 }
 
 function showConfirmDelete(){
@@ -2088,9 +2072,11 @@ function toggleFilterPanel(){
 
 // === 14. KEYBOARD SHORTCUTS ===
 document.addEventListener('keydown',e=>{
+  const isInputFocused=document.activeElement?.matches('input, textarea, [contenteditable="true"]');
+
   if(e.key==='/'){e.preventDefault();const search=document.querySelector('#board-switcher input');if(search)search.focus();return}
   if(e.key==='Escape'){closeAllPopovers();const modal=document.querySelector('.modal-overlay');if(modal)modal.remove();const archive=document.getElementById('archive-panel');if(archive)archive.classList.remove('open')}
-  if(e.key==='n'){e.preventDefault();const btn=document.querySelector('.add-list-btn');if(btn)btn.click()}
+  if(e.key==='n'&&!isInputFocused){e.preventDefault();const btn=document.querySelector('.add-list-btn');if(btn)btn.click()}
   
   // Card shortcuts
   const hovered=document.querySelector('.card:hover');if(hovered){
