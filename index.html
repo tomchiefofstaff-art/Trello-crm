@@ -2072,11 +2072,8 @@ function toggleFilterPanel(){
 
 // === 14. KEYBOARD SHORTCUTS ===
 document.addEventListener('keydown',e=>{
-  const isInputFocused=document.activeElement?.matches('input, textarea, [contenteditable="true"]');
-
   if(e.key==='/'){e.preventDefault();const search=document.querySelector('#board-switcher input');if(search)search.focus();return}
   if(e.key==='Escape'){closeAllPopovers();const modal=document.querySelector('.modal-overlay');if(modal)modal.remove();const archive=document.getElementById('archive-panel');if(archive)archive.classList.remove('open')}
-  if(e.key==='n'&&!isInputFocused){e.preventDefault();const btn=document.querySelector('.add-list-btn');if(btn)btn.click()}
   
   // Card shortcuts
   const hovered=document.querySelector('.card:hover');if(hovered){
