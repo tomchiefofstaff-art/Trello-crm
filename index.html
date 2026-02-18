@@ -491,8 +491,16 @@ function listenConnection(){
 
 function createBoard(title,bg){
   const ref=db.ref('boards').push();
+  const boardId=ref.key;
   ref.child('meta').set({title,background:bg||'#0052cc',starred:false,createdAt:Date.now(),labelNames:{},customLabels:{}});
-  return ref.key;
+
+  // Create default lists
+  const defaultLists=['To-Do','In Bearbeitung','Erledigt'];
+  defaultLists.forEach((listTitle,index)=>{
+    createList(boardId,listTitle,index);
+  });
+
+  return boardId;
 }
 
 function updateBoardMeta(boardId,data){db.ref('boards/'+boardId+'/meta').update(data)}
